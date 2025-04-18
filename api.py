@@ -14,7 +14,7 @@ def home():
     
     response = "None"
 
-    rawdata = self.chat_ai.get_bot_response(self.model_name, rawdatajson["name"], rawdatajson["input"])
+    rawdata = chat_ai.get_bot_response(model_name, rawdatajson["name"], rawdatajson["input"])
     data = rawdata.split("me:", 1)[1].splitlines()[0]
     response = data
     return jsonify({'message': response})
