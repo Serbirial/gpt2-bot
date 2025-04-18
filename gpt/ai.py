@@ -23,24 +23,30 @@ class ChatAI:
         gpt2.finetune(
             self.sess,
             data_path,
+            learning_rate=0.000001,
             model_name=model_name,
             checkpoint_dir="checkpoint",
             restore_from="latest",
             batch_size=1,
-            sample_every=100,
-            sample_length=100,
-            save_every=100
+            steps=1000,
+            sample_every=200,
+            sample_length=1000,
+            save_every=500
             )
         gpt2.generate(self.sess)
 
 
     def get_bot_response(self, model_name: str, author: str, message: str) -> str:
         """ Get a response to a given message using GPT2 model """
+        prompt = f"""
+{author}: {message}
+
+me:"""
         return gpt2.generate(self.sess,
                             model_name=model_name,
                             length=random.randint(10, 30),
-                            prefix=author + ": " + message,
-                            temperature=0.9,
+                            prefix=prompt,
+                            temperature=0.79,
                             include_prefix=False,
                             return_as_list=True,
                             )[0]

@@ -45,8 +45,9 @@ class ChatBot(discord.Client):
 
         response = ""
         with message.channel.typing():
-            response = self.chat_ai.get_bot_response(self.model_name, message.author.nick, processed_input)
-
+            rawdata = self.chat_ai.get_bot_response(self.model_name, message.author.nick, processed_input)
+            data = rawdata.split("me:", 1)[1].splitlines()[0]
+            response = data
         await message.channel.send(response)
 
 
