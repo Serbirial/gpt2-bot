@@ -44,7 +44,7 @@ class ChatAI:
 me:"""
         return gpt2.generate(self.sess,
                             model_name=model_name,
-                            length=random.randint(10, 30),
+                            length=random.randint(10, 100),
                             prefix=prompt,
                             temperature=0.79,
                             include_prefix=False,
