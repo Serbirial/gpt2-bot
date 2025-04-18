@@ -1,9 +1,17 @@
 import random
 import discord
+import asyncio
+from concurrent.futures import ProcessPoolExecutor
+import aiohttp
 from gpt import ai
 
 intents = discord.Intents.all()
+import threading
 
+async def fetch(url, name, data):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, json={"name": name, "input": data}) as response:
+            return await response.json()
 
 class ChatBot(discord.Client):
     """ChatBot handles discord communication. This class runs its own thread that
@@ -15,16 +23,22 @@ class ChatBot(discord.Client):
     """
 
     def __init__(self) -> None:
-        self.model_name = "355M" # Overwrite with set_model_name()
+        self.set_response_chance()
+        
         super().__init__(intents=intents)
 
 
     async def on_ready(self) -> None:
         """ Initializes the GPT2 AI on bot startup """
         print("Logged on as", self.user)
-        self.chat_ai = ai.ChatAI() # Ready the GPT2 AI generator
-        self.chat_ai.load_model() # Load the GPT2 model
 
+    def send_message_to_ai(self, message, name, processed_input):
+        response = "None"
+
+        rawdata = self.chat_ai.get_bot_response(self.model_name, name, processed_input)
+        data = rawdata.split("me:", 1)[1].splitlines()[0]
+        response = data
+        return response
 
     async def on_message(self, message: discord.Message) -> None:
         """ Handle new messages sent to the server channels this bot is watching """
@@ -40,20 +54,15 @@ class ChatBot(discord.Client):
                 has_mentioned = True
                 break
 
+        processed_input = self.process_input(message.content)
+
         # Only respond randomly (or when mentioned), not to every message
         if random.random() > float(self.response_chance) and has_mentioned == False:
             return
+        async with message.channel.typing():
 
-        processed_input = self.process_input(message.content)
-
-        response = ""
-        with message.channel.typing():
-            rawdata = self.chat_ai.get_bot_response(self.model_name, message.author.nick, processed_input)
-            data = rawdata.split("me:", 1)[1].splitlines()[0]
-            response = data
-        await message.channel.send(response)
-
-
+            await message.channel.send(found)
+    
     def process_input(self, message: str) -> str:
         """ Process the input message """
         processed_input = message
@@ -81,4 +90,4 @@ class ChatBot(discord.Client):
         
 if __name__ == "__main__":
     bot = ChatBot()
-    bot.login("")
+    bot.run("")
