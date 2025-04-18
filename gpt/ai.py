@@ -24,6 +24,8 @@ class ChatAI:
             self.sess,
             data_path,
             model_name=model_name,
+            checkpoint_dir="checkpoint",
+            run_name=0,
             batch_size=1,
             sample_every=100,
             sample_length=100,
