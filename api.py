@@ -20,4 +20,4 @@ def home():
     return jsonify({'message': response})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="localhost", port=6969, debug=True)
