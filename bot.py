@@ -67,8 +67,7 @@ class ChatBot(discord.Client):
         """ Process the input message """
         processed_input = message
         # Convert user ids to just nick names
-        processed_input.replace("@"+self.user.name+"#"+self.user.discriminator, "")
-        processed_input.replace("@"+self.user.name, "")
+        processed_input.replace("<@"+str(self.user.id)+">", "")
         return processed_input
 
 
@@ -90,4 +89,4 @@ class ChatBot(discord.Client):
         
 if __name__ == "__main__":
     bot = ChatBot()
-    bot.run("")
+    bot.run(open("token.txt", 'r').readlines()[0])
