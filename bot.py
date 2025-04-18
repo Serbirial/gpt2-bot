@@ -60,7 +60,7 @@ class ChatBot(discord.Client):
         if random.random() > float(self.response_chance) and has_mentioned == False:
             return
         async with message.channel.typing():
-            found = fetch("localhost:6969")
+            found = fetch("localhost:6969", message.author.nick, processed_input)
             await message.channel.send(found)
     
     def process_input(self, message: str) -> str:
