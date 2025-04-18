@@ -10,7 +10,7 @@ import threading
 
 async def fetch(url, name, data):
     async with aiohttp.ClientSession() as session:
-        async with session.get(url, json={"name": name, "input": data}) as response:
+        async with session.post(url, json={"name": name, "input": data}) as response:
             return await response.json()
 
 class ChatBot(discord.Client):
