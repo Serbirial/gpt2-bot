@@ -61,7 +61,7 @@ class ChatBot(discord.Client):
             return
         async with message.channel.typing():
             found = await fetch("http://localhost:6969", message.author.nick, processed_input)
-            await message.channel.send(found)
+            await message.channel.send(found["message"])
     
     def process_input(self, message: str) -> str:
         """ Process the input message """
