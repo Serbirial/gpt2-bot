@@ -1,6 +1,7 @@
 import random
 import discord
-from .ai import ChatAI
+from gpt import ai
+
 
 class ChatBot(discord.Client):
     """ChatBot handles discord communication. This class runs its own thread that
@@ -19,7 +20,7 @@ class ChatBot(discord.Client):
     async def on_ready(self) -> None:
         """ Initializes the GPT2 AI on bot startup """
         print("Logged on as", self.user)
-        self.chat_ai = ChatAI() # Ready the GPT2 AI generator
+        self.chat_ai = ai.ChatAI() # Ready the GPT2 AI generator
         self.chat_ai.load_model() # Load the GPT2 model
 
 
