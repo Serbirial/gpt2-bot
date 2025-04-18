@@ -2,6 +2,8 @@ import random
 import discord
 from gpt import ai
 
+intents = discord.Intents.all()
+
 
 class ChatBot(discord.Client):
     """ChatBot handles discord communication. This class runs its own thread that
@@ -14,7 +16,7 @@ class ChatBot(discord.Client):
 
     def __init__(self) -> None:
         self.model_name = "355M" # Overwrite with set_model_name()
-        super().__init__()
+        super().__init__(intents=intents)
 
 
     async def on_ready(self) -> None:
