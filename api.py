@@ -1,5 +1,5 @@
 from gpt import ai
-model_name = "355M" # Overwrite with set_model_name()
+model_name = "124M" # Overwrite with set_model_name()
 
 chat_ai = ai.ChatAI() # Ready the GPT2 AI generator
 chat_ai.load_model() # Load the GPT2 model
@@ -30,6 +30,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         response = "None"
 
         rawdata = chat_ai.get_bot_response(model_name, input_data["name"], input_data["input"])
+        print(rawdata)
         data = rawdata.split("me:", 1)[1].splitlines()[0]
         response = data
         
