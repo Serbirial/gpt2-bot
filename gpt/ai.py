@@ -41,7 +41,7 @@ class ChatAI:
         prompt = f"""
 {author}: {message}
 
-me:"""
+Lana:"""
         return gpt2.generate(self.sess,
                             model_name=model_name,
                             length=random.randint(10, 100),

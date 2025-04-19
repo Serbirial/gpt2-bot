@@ -31,7 +31,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
         rawdata = chat_ai.get_bot_response(model_name, input_data["name"], input_data["input"])
         print(rawdata)
-        data = rawdata.split("me:", 1)[1].splitlines()[0]
+        data = rawdata.split("Lana:", 1)[1].splitlines()[0]
         response = data
         
         # - response -

@@ -39,12 +39,12 @@ class ChatBot(discord.Client):
                         elif lastauthor.id == msg.author.id:
                             wholemsg += msg.content + " "
                         elif lastauthor.id != msg.author.id:
-                            file.write(wholemsg + "\n")
+                            file.write(wholemsg + "\n\n")
                             wholemsg = f"{msg.author.name}: {msg.content} "
                         lastauthor = msg.author
                 except AttributeError:
                     continue
-                file.write(wholemsg + "\n")
+                file.write(wholemsg + "\n\n")
 
     async def on_ready(self) -> None:
         """ Initializes the GPT2 AI on bot startup """
