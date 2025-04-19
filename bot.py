@@ -27,10 +27,26 @@ class ChatBot(discord.Client):
         
         super().__init__(intents=intents)
 
-
+    async def get_chat_logs(self):
+        for guild in self.guilds:
+            for channel in guild.channels:
+                file = open(f"{channel.id} - {channel.name}.txt", "a+")
+                lastmsg = None
+                wholemsg = f"{msg.author.nick}: "
+                async for msg in channel.history(limit=None, oldest_first=True):
+                    if lastmsg == None:
+                        wholemsg += msg.content + "\n"
+                    elif lastmsg.author.id == msg.author.id:
+                        wholemsg += msg.content + "\n"
+                    else:
+                        file.write(wholemsg + "\n")
+                        wholemsg = msg
+                    lastmsg = msg
+                    
     async def on_ready(self) -> None:
         """ Initializes the GPT2 AI on bot startup """
         print("Logged on as", self.user)
+        await self.get_chat_logs()
 
     def send_message_to_ai(self, message, name, processed_input):
         response = "None"
