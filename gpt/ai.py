@@ -46,7 +46,7 @@ me:"""
                             model_name=model_name,
                             length=random.randint(10, 100),
                             prefix=prompt,
-                            temperature=0.79,
+                            temperature=0.85,
                             include_prefix=False,
                             return_as_list=True,
                             )[0]
