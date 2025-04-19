@@ -49,7 +49,7 @@ class ChatBot(discord.Client):
     async def on_ready(self) -> None:
         """ Initializes the GPT2 AI on bot startup """
         print("Logged on as", self.user)
-        await self.get_chat_logs()
+        #await self.get_chat_logs()
 
     def send_message_to_ai(self, message, name, processed_input):
         response = "None"
