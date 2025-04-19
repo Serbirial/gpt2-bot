@@ -3,9 +3,8 @@ import discord
 import asyncio
 from concurrent.futures import ProcessPoolExecutor
 import aiohttp
-from gpt import ai
 
-intents = discord.Intents.all()
+#intents = discord.Intents.all()
 import threading
 
 async def fetch(url, name, data):
@@ -24,25 +23,29 @@ class ChatBot(discord.Client):
 
     def __init__(self) -> None:
         self.set_response_chance()
-        
-        super().__init__(intents=intents)
+        super().__init__()
+        #super().__init__(intents=intents)
 
     async def get_chat_logs(self):
         for guild in self.guilds:
             for channel in guild.channels:
-                file = open(f"{channel.id} - {channel.name}.txt", "a+")
-                lastmsg = None
-                wholemsg = f"{msg.author.nick}: "
-                async for msg in channel.history(limit=None, oldest_first=True):
-                    if lastmsg == None:
-                        wholemsg += msg.content + "\n"
-                    elif lastmsg.author.id == msg.author.id:
-                        wholemsg += msg.content + "\n"
-                    else:
-                        file.write(wholemsg + "\n")
-                        wholemsg = msg
-                    lastmsg = msg
-                    
+                file = open(f"{channel.id} - {channel.name}.txt", "a+", encoding='utf-8')
+                lastauthor = None
+                wholemsg = ""
+                try:
+                    async for msg in channel.history(limit=None, oldest_first=True):
+                        if lastauthor == None:
+                            wholemsg += f"{msg.author.name}: {msg.content} "
+                        elif lastauthor.id == msg.author.id:
+                            wholemsg += msg.content + " "
+                        elif lastauthor.id != msg.author.id:
+                            file.write(wholemsg + "\n")
+                            wholemsg = f"{msg.author.name}: {msg.content} "
+                        lastauthor = msg.author
+                except AttributeError:
+                    continue
+                file.write(wholemsg + "\n")
+
     async def on_ready(self) -> None:
         """ Initializes the GPT2 AI on bot startup """
         print("Logged on as", self.user)
@@ -75,9 +78,10 @@ class ChatBot(discord.Client):
         # Only respond randomly (or when mentioned), not to every message
         if random.random() > float(self.response_chance) and has_mentioned == False:
             return
-        async with message.channel.typing():
-            found = await fetch("http://localhost:6969", message.author.nick, processed_input)
-            await message.channel.send(found["message"])
+        if has_mentioned:
+            async with message.channel.typing():
+                found = await fetch("http://localhost:6969", message.author.nick, processed_input)
+                await message.channel.send(found["message"])
     
     def process_input(self, message: str) -> str:
         """ Process the input message """
