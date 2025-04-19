@@ -23,7 +23,7 @@ class ChatAI:
         gpt2.finetune(
             self.sess,
             data_path,
-            learning_rate=0.001,
+            learning_rate=0.0001,
             model_name=model_name,
             checkpoint_dir="checkpoint",
             restore_from="latest",
