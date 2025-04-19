@@ -55,8 +55,12 @@ class ChatBot(discord.Client):
         response = "None"
 
         rawdata = self.chat_ai.get_bot_response(self.model_name, name, processed_input)
-        data = rawdata.split("me:", 1)[1].splitlines()[0]
-        response = data
+        data = rawdata.split("me:", 1)[1]
+        print(data)
+        data = data.splitlines()
+        print("\n\n\n")
+        print(data)
+        response = data[0]
         return response
 
     async def on_message(self, message: discord.Message) -> None:

@@ -23,15 +23,15 @@ class ChatAI:
         gpt2.finetune(
             self.sess,
             data_path,
-            learning_rate=0.000001,
+            learning_rate=0.001,
             model_name=model_name,
             checkpoint_dir="checkpoint",
             restore_from="latest",
             batch_size=1,
-            steps=1000,
-            sample_every=200,
+            steps=600,
+            sample_every=300,
             sample_length=1000,
-            save_every=500
+            save_every=600
             )
         gpt2.generate(self.sess)
 
