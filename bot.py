@@ -96,14 +96,14 @@ class ChatBot(discord.Client):
             async with message.channel.typing():
                 try:
                     found = await fetch("http://localhost:6969", message.author.nick, processed_input)
-                    await message.channel.reply(found["message"])
+                    await message.reply(found["message"])
                 except aiohttp.client_exceptions.ClientConnectorError:
                     pass
     def process_input(self, message: str) -> str:
         """ Process the input message """
         processed_input = message
         # Convert user ids to just nick names
-        processed_input.replace("<@"+str(self.user.id)+">", "")
+        processed_input.replace(f"<@1065772573331312650>", "Lana")
         return processed_input
 
 
