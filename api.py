@@ -35,7 +35,9 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         output = rawdata.splitlines()
         i = 1
         found = None
-        if output[0].split(":")[1].strip() == "":
+        temp = output[0].split(":")[0].strip()
+        print(temp)
+        if temp == "":
             while found == None:
                 try:
                     if i > 100:
