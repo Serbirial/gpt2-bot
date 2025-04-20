@@ -31,13 +31,11 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
         rawdata = chat_ai.get_bot_response(model_name, input_data["name"], input_data["input"])
         print(rawdata)
-        data = rawdata.split("Summer~:", 1)[1]
+        data = rawdata.split("Lana:", 1)[1]
         output = rawdata.splitlines()
         i = 1
         found = None
-        temp = output[0].split(":")[0].strip()
-        print(temp)
-        if temp == "":
+        if output[0].split(":")[1].strip() == "":
             while found == None:
                 try:
                     if i > 100:
