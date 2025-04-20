@@ -28,23 +28,33 @@ class ChatBot(discord.Client):
 
     async def get_chat_logs(self):
         for guild in self.guilds:
-            for channel in guild.channels:
-                file = open(f"{channel.id} - {channel.name}.txt", "a+", encoding='utf-8')
-                lastauthor = None
-                wholemsg = ""
-                try:
-                    async for msg in channel.history(limit=None, oldest_first=True):
-                        if lastauthor == None:
-                            wholemsg += f"{msg.author.name}: {msg.content} "
-                        elif lastauthor.id == msg.author.id:
-                            wholemsg += msg.content + " "
-                        elif lastauthor.id != msg.author.id:
-                            file.write(wholemsg + "\n\n")
-                            wholemsg = f"{msg.author.name}: {msg.content} "
-                        lastauthor = msg.author
-                except AttributeError:
-                    continue
-                file.write(wholemsg + "\n\n")
+            if guild.id in [1337958590098440193, 504859909641338900, 321052425567993856,672546390915940405,690072854582264086,1282435834850840626, 1214821796751081482, 1270079696247459860, 1353806073999396986, 779094028327059540]: # last = furry not done yet
+                pass
+            else:
+                for channel in guild.channels:
+                    if channel.id == 1340478942779539648:
+                        file = open(f"{guild.id} - '{channel.id}'.txt", "a+", encoding='utf-8')
+                        lastauthor = None
+                        wholemsg = ""
+                        try:
+                            async for msg in channel.history(limit=None, oldest_first=True):
+                                if msg.content == "" or msg.content == None:
+                                    pass
+                                elif lastauthor == None:
+                                    wholemsg += f"{msg.author.name}: {msg.content} "
+                                elif lastauthor.id == msg.author.id:
+                                    wholemsg += msg.content + " "
+                                elif lastauthor.id != msg.author.id:
+                                    file.write(wholemsg + "\n\n")
+                                    wholemsg = f"{msg.author.name}: {msg.content} "
+                                lastauthor = msg.author
+                        except AttributeError:
+                            continue
+                        except discord.errors.Forbidden:
+                            continue
+                        file.write(wholemsg + "\n\n")
+                    else:
+                        continue
 
     async def on_ready(self) -> None:
         """ Initializes the GPT2 AI on bot startup """
@@ -84,9 +94,11 @@ class ChatBot(discord.Client):
             return
         if has_mentioned:
             async with message.channel.typing():
-                found = await fetch("http://localhost:6969", message.author.nick, processed_input)
-                await message.channel.send(found["message"])
-    
+                try:
+                    found = await fetch("http://localhost:6969", message.author.nick, processed_input)
+                    await message.channel.reply(found["message"])
+                except aiohttp.client_exceptions.ClientConnectorError:
+                    pass
     def process_input(self, message: str) -> str:
         """ Process the input message """
         processed_input = message
