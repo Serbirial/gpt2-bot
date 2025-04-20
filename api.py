@@ -31,8 +31,27 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
         rawdata = chat_ai.get_bot_response(model_name, input_data["name"], input_data["input"])
         print(rawdata)
-        data = rawdata.split("Lana:", 1)[1].splitlines()[0]
-        response = data
+        data = rawdata.split("Summer~:", 1)[1]
+        output = rawdata.splitlines()
+        i = 1
+        found = None
+        if output[0].split(":")[1].strip() == "":
+            while found == None:
+                try:
+                    if i > 100:
+                        response = "Couldnt find response"
+                        break
+                    temp = output[i].split(":").strip()
+                    if temp != "":
+                        response = f"Lana: {temp}"
+                        break
+                    i += 1
+                except KeyError:
+                    response = "Couldnt find response"
+                    break
+                
+        else:
+            response = output[0]
         
         # - response -
         
@@ -48,6 +67,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
 
 Handler = MyHandler
+
 
 try:
     with socketserver.TCPServer(("localhost", PORT), Handler) as httpd:
