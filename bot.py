@@ -28,11 +28,11 @@ class ChatBot(discord.Client):
 
     async def get_chat_logs(self):
         for guild in self.guilds:
-            if guild.id in [1337958590098440193, 504859909641338900, 321052425567993856,672546390915940405,690072854582264086,1282435834850840626, 1214821796751081482, 1270079696247459860, 1353806073999396986, 779094028327059540]: # last = furry not done yet
+            if guild.id in [1337958590098440193, 504859909641338900, 321052425567993856,672546390915940405,690072854582264086,1282435834850840626, 1214821796751081482, 1270079696247459860, 1353806073999396986]: # last = furry not done yet
                 pass
             else:
                 for channel in guild.channels:
-                    if channel.id == 1340478942779539648:
+                    if channel.id == 779094028829327372:
                         file = open(f"{guild.id} - '{channel.id}'.txt", "a+", encoding='utf-8')
                         lastauthor = None
                         wholemsg = ""
@@ -95,15 +95,13 @@ class ChatBot(discord.Client):
         if has_mentioned:
             async with message.channel.typing():
                 try:
-                    found = await fetch("http://localhost:6969", message.author.nick, processed_input)
+                    found = await fetch("http://localhost:6969", message.author.display_name, processed_input)
                     await message.reply(found["message"])
                 except aiohttp.client_exceptions.ClientConnectorError:
                     pass
     def process_input(self, message: str) -> str:
         """ Process the input message """
-        processed_input = message
-        # Convert user ids to just nick names
-        processed_input.replace(f"<@1065772573331312650>", "Lana")
+        processed_input = message.replace(f"<@1065772573331312650>", "Lana")
         return processed_input
 
 
