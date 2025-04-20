@@ -33,7 +33,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         print(rawdata)
         data = rawdata.split("Lana:", 1)[1]
         output = rawdata.splitlines()
-        i = 1
+        i = 0
         found = None
         if output[0].split(":")[1].strip() == "":
             while found == None:
