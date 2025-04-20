@@ -15,6 +15,48 @@ PORT = 6969
 
 class MyHandler(http.server.SimpleHTTPRequestHandler):
     
+    def get_response(self, input_data):
+        response = None
+
+        rawdata = chat_ai.get_bot_response(model_name, input_data["name"], input_data["input"])
+        print(rawdata)
+        data = rawdata.split("Lana:", 1)[1]
+        rawoutput = rawdata.splitlines()
+        rawoutput.pop(0)
+        output = []
+        for thing in rawoutput:
+            if thing == "":
+                pass
+            else:
+                output.append(thing)
+        print(output)
+        i = 0
+        found = None
+        if output[0].split(":", 1)[1].strip() == "":
+            while found == None:
+                try:
+                    if i > 100:
+                        response = None
+                        break
+                    temp = output[i].split(":", 1)
+                    if len(temp) == 1:
+                        i += 1
+                        pass
+                    else:
+                        temp = temp[1].strip()
+                    print(f"data: {temp}")
+                    if temp != "":
+                        response = temp
+                        break
+                    i += 1
+                except IndexError:
+                    response = None
+                    break
+                
+        else:
+            response = output[0].split(":", 1)[1]
+        return response
+
     def do_POST(self):
         # - request -
         content_length = int(self.headers['Content-Length'])
@@ -27,31 +69,15 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             input_data = None
             
         print(input_data)
-        response = "None"
+        response = None
+        while response == None:
+            
+            temp = self.get_response(input_data)
+            if temp == None:
+                pass
+            else:
+                response = temp
 
-        rawdata = chat_ai.get_bot_response(model_name, input_data["name"], input_data["input"])
-        print(rawdata)
-        data = rawdata.split("Lana:", 1)[1]
-        output = rawdata.splitlines()
-        i = 0
-        found = None
-        if output[0].split(":")[1].strip() == "":
-            while found == None:
-                try:
-                    if i > 100:
-                        response = "Couldnt find response"
-                        break
-                    temp = output[i].split(":").strip()
-                    if temp != "":
-                        response = f"Lana: {temp}"
-                        break
-                    i += 1
-                except KeyError:
-                    response = "Couldnt find response"
-                    break
-                
-        else:
-            response = output[0]
         
         # - response -
         
