@@ -7,9 +7,9 @@ import aiohttp
 #intents = discord.Intents.all()
 import threading
 
-async def fetch(url, name, data):
+async def fetch(url, name, data, context):
     async with aiohttp.ClientSession() as session:
-        async with session.post(url, json={"name": name, "input": data}) as response:
+        async with session.post(url, json={"name": name, "input": data, "context": context}) as response:
             return await response.json(content_type=None)
 
 class ChatBot(discord.Client):
@@ -73,10 +73,10 @@ class ChatBot(discord.Client):
         print("Logged on as", self.user)
         #await self.get_chat_logs()
 
-    def send_message_to_ai(self, message, name, processed_input):
+    def send_message_to_ai(self, message, name, processed_input, context):
         response = "None"
 
-        rawdata = self.chat_ai.get_bot_response(self.model_name, name, processed_input)
+        rawdata = self.chat_ai.get_bot_response(self.model_name, context, name, processed_input)
         data = rawdata.split("me:", 1)[1]
         print(data)
         data = data.splitlines()
@@ -109,14 +109,10 @@ class ChatBot(discord.Client):
 
             processed_context = self.process_input(context)
 
-            processed_input = f"""{processed_context}
 
-{processed_input}"""
-
-            print(f"\n\n{processed_input}\n\n")
             async with message.channel.typing():
                 try:
-                    found = await fetch("http://localhost:6969", message.author.display_name, processed_input)
+                    found = await fetch("http://localhost:6969", message.author.display_name, processed_input, processed_context)
                     await message.reply(found["message"])
                 except aiohttp.client_exceptions.ClientConnectorError:
                     pass

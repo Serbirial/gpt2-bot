@@ -18,7 +18,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
     def get_response(self, input_data):
         response = None
 
-        rawdata = chat_ai.get_bot_response(model_name, input_data["name"], input_data["input"])
+        rawdata = chat_ai.get_bot_response(model_name, input_data["context"], input_data["name"], input_data["input"])
         print(rawdata)
         data = rawdata.split("Lana:", 1)[1]
         rawoutput = rawdata.splitlines()
@@ -30,6 +30,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 output.append(thing)
         print(output)
+        # output is the valid replies
         i = 0
         found = None
         if output[0].split(":", 1)[1].strip() == "":

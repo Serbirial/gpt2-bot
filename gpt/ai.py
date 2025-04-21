@@ -37,13 +37,14 @@ class ChatAI:
         gpt2.generate(self.sess)
 
 
-    def get_bot_response(self, model_name: str, author: str, message: str) -> str:
+    def get_bot_response(self, model_name: str, context: str, author: str, message: str) -> str:
         """ Get a response to a given message using GPT2 model """
         prompt = f"""
+{context}
 {author}: {message}
 
 Lana:"""
-        return gpt2.generate(self.sess,
+        data = gpt2.generate(self.sess,
                             model_name=model_name,
                             length=random.randint(10, 100),
                             prefix=prompt,
@@ -51,3 +52,4 @@ Lana:"""
                             include_prefix=False,
                             return_as_list=True,
                             )[0]
+        return data.split(context)[1]
