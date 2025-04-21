@@ -28,11 +28,10 @@ class ChatBot(discord.Client):
 
     async def get_chat_logs(self):
         for guild in self.guilds:
-            if guild.id in [1337958590098440193, 504859909641338900, 321052425567993856,672546390915940405,690072854582264086,1282435834850840626, 1214821796751081482, 1270079696247459860, 1353806073999396986]: # last = furry not done yet
+            if guild.id in [779094028327059540, 1337958590098440193, 504859909641338900, 321052425567993856,672546390915940405,690072854582264086,1282435834850840626, 1214821796751081482, 1270079696247459860, 1353806073999396986]: # last = furry not done yet
                 pass
             else:
                 for channel in guild.channels:
-                    if channel.id == 779094028829327372:
                         file = open(f"{guild.id} - '{channel.id}'.txt", "a+", encoding='utf-8')
                         lastauthor = None
                         wholemsg = ""
@@ -55,6 +54,16 @@ class ChatBot(discord.Client):
                         file.write(wholemsg + "\n\n")
                     else:
                         continue
+                    
+    async def get_chat_context(self, message):
+        channel = message.channel
+        prompt = ""
+        async for msg in channel.history(limit=100, oldest_first=False):
+            if msg.id == message:
+                pass
+            else:
+                prompt += f"{msg.author.display_name}: {msg.content}\n\n"
+        return prompt
 
     async def on_ready(self) -> None:
         """ Initializes the GPT2 AI on bot startup """
@@ -88,6 +97,16 @@ class ChatBot(discord.Client):
                 break
 
         processed_input = self.process_input(message.content)
+
+        context = await self.get_chat_context(message)
+
+        processed_context = self.process_input(context)
+
+        processed_input = f"""{processed_context}
+
+{processed_input}"""
+
+        print(f"\n\n{processed_input}\n\n")
 
         # Only respond randomly (or when mentioned), not to every message
         if random.random() > float(self.response_chance) and has_mentioned == False:
