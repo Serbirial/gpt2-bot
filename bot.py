@@ -58,7 +58,7 @@ class ChatBot(discord.Client):
         channel: discord.TextChannel = self.get_channel(message.channel.id)
         prompt = []
         realprompt = ""
-        async for msg in channel.history(limit=100, oldest_first=False, before=message.created_at):
+        async for msg in channel.history(limit=20, oldest_first=False, before=message.created_at):
             if msg.id == message:
                 pass
             else:
