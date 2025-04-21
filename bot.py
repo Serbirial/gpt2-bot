@@ -55,7 +55,7 @@ class ChatBot(discord.Client):
                         file.write(wholemsg + "\n\n")
 
     async def get_chat_context(self, message):
-        channel: discord.TextChannel = await self.get_channel(message.channel.id)
+        channel: discord.TextChannel = self.get_channel(message.channel.id)
         prompt = ""
         async for msg in channel.history(limit=100, oldest_first=False, before=message.created_at):
             if msg.id == message:
