@@ -95,22 +95,21 @@ class ChatBot(discord.Client):
                 has_mentioned = True
                 break
 
-        processed_input = self.process_input(message.content)
-
-        context = await self.get_chat_context(message)
-
-        processed_context = self.process_input(context)
-
-        processed_input = f"""{processed_context}
-
-{processed_input}"""
-
-        print(f"\n\n{processed_input}\n\n")
-
         # Only respond randomly (or when mentioned), not to every message
         if random.random() > float(self.response_chance) and has_mentioned == False:
             return
         if has_mentioned:
+            processed_input = self.process_input(message.content)
+
+            context = await self.get_chat_context(message)
+
+            processed_context = self.process_input(context)
+
+            processed_input = f"""{processed_context}
+
+{processed_input}"""
+
+            print(f"\n\n{processed_input}\n\n")
             async with message.channel.typing():
                 try:
                     found = await fetch("http://localhost:6969", message.author.display_name, processed_input)
