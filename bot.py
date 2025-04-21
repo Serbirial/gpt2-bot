@@ -32,6 +32,7 @@ class ChatBot(discord.Client):
                 pass
             else:
                 for channel in guild.channels:
+                    if channel.id == 314918509425721344:
                         file = open(f"{guild.id} - '{channel.id}'.txt", "a+", encoding='utf-8')
                         lastauthor = None
                         wholemsg = ""
@@ -52,9 +53,7 @@ class ChatBot(discord.Client):
                         except discord.errors.Forbidden:
                             continue
                         file.write(wholemsg + "\n\n")
-                    else:
-                        continue
-                    
+
     async def get_chat_context(self, message):
         channel = message.channel
         prompt = ""
