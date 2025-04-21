@@ -28,11 +28,11 @@ class ChatBot(discord.Client):
 
     async def get_chat_logs(self):
         for guild in self.guilds:
-            if guild.id in [779094028327059540, 1337958590098440193, 504859909641338900, 321052425567993856,672546390915940405,690072854582264086,1282435834850840626, 1214821796751081482, 1270079696247459860, 1353806073999396986]: # last = furry not done yet
+            if guild.id in [829282091787091970, 314918509425721344, 779094028327059540, 1337958590098440193, 321052425567993856,672546390915940405,690072854582264086,1282435834850840626, 1214821796751081482, 1270079696247459860, 1353806073999396986]: # last = furry not done yet
                 pass
             else:
                 for channel in guild.channels:
-                    if channel.id == 314918509425721344:
+                    if channel.id == 1357505321643282512:
                         file = open(f"{guild.id} - '{channel.id}'.txt", "a+", encoding='utf-8')
                         lastauthor = None
                         wholemsg = ""
@@ -118,7 +118,7 @@ class ChatBot(discord.Client):
                     pass
     def process_input(self, message: str) -> str:
         """ Process the input message """
-        processed_input = message.replace(f"<@1065772573331312650>", "Lana")
+        processed_input = message.replace(f"<@1065772573331312650>", "ayokadeno")
         return processed_input
 
 

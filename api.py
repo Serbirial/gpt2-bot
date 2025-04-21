@@ -20,7 +20,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
         rawdata = chat_ai.get_bot_response(model_name, input_data["context"], input_data["name"], input_data["input"])
         print(rawdata)
-        data = rawdata.split("Lana:", 1)[1]
+        data = rawdata.split("ayokadeno:", 1)[1]
         rawoutput = rawdata.splitlines()
         output = []
         for thing in rawoutput:
@@ -54,7 +54,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
                             response = temp
                             break
                         elif secondlinesplit == 2: # AI added a second response after the expected one
-                            if secondlinesplit[0] == "Lana":
+                            if secondlinesplit[0] == "ayokadeno":
                                 temp += f" {secondlinesplit[1]}"
                                 response = temp
                                 break

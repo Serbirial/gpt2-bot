@@ -43,7 +43,7 @@ class ChatAI:
 {context}
 {author}: {message}
 
-Lana:"""
+ayokadeno:"""
         data = gpt2.generate(self.sess,
                             model_name=model_name,
                             length=random.randint(10, 100),
