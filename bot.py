@@ -54,11 +54,11 @@ class ChatBot(discord.Client):
                             continue
                         file.write(wholemsg + "\n\n")
 
-    async def get_chat_context(self, message: discord.Message):
-        messages = await self.get_channel(message.channel.id).history(limit=101, oldest_first=True, before=message.created_at).flatten()
+    async def get_chat_context(self, message):
+        channel: discord.TextChannel = await self.get_channel(message.channel.id)
         prompt = ""
-        for msg in messages:
-            if msg.id == message.id:
+        async for msg in channel.history(limit=100, oldest_first=False, before=message.created_at):
+            if msg.id == message:
                 pass
             else:
                 prompt += f"{msg.author.display_name}: {msg.content}\n\n"
