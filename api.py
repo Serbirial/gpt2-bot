@@ -22,15 +22,13 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         print(rawdata)
         data = rawdata.split("Lana:", 1)[1]
         rawoutput = rawdata.splitlines()
-        print(f"raw output pre pop: {rawoutput}")
-        rawoutput.pop(0)
-        print(f"after: {rawoutput}")
         output = []
         for thing in rawoutput:
             if thing == "":
                 pass
             else:
                 output.append(thing)
+        output.pop(0)
         print(output)
         # output is the valid replies
         i = 0
