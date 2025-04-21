@@ -47,7 +47,17 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
                         temp = temp[1].strip()
                     print(f"data: {temp}")
                     if temp != "":
-                        response = temp
+                        secondline = output[i+1]
+                        secondlinesplit = secondline.split(":")
+                        if len(secondlinesplit) == 1: # AI added more to the response on a line after whats expected
+                            temp += f" {secondlinesplit[0]}"
+                            response = temp
+                            break
+                        elif secondlinesplit == 2: # AI added a second response after the expected one
+                            if secondlinesplit[0] == "Lana":
+                                temp += f" {secondlinesplit[1]}"
+                                response = temp
+                                break
                         break
                     i += 1
                 except IndexError:
